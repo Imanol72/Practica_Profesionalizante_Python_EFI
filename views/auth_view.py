@@ -38,7 +38,7 @@ def login():
             identity=username,
             expires_delta=timedelta(minutes=40),
             additional_claims=dict(
-                administrador=usuario.is_admin
+            administrador=usuario.is_admin
             )
         )
 
@@ -47,47 +47,36 @@ def login():
     return jsonify(Mensaje="El usuario y la contraseña al parecer no coinciden")
 
 @auth_bp.route('/users', methods=['GET', 'POST'])
-@jwt_required()
 def users():
-    additional_data = get_jwt()
-    administrador = additional_data.get('administrador')
-
     if request.method == 'POST':
-        if administrador is True:
-            data = request.get_json()
-            username = data.get('username')
-            password = data.get('password')
-            is_admin = data.get('is_admin')
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+        is_admin = data.get('is_admin')
 
-
-            try:
-                nuevo_usuario = User(
-                    username=username,
-                    password_hash=generate_password_hash(password),
-                    is_admin=is_admin,
-                )
-                db.session.add(nuevo_usuario)
-                db.session.commit()
-                return jsonify(
-                    {
-                    "Mensaje":"Usuario creado correctamente",
-                    "Usuario": nuevo_usuario.to_dict()
-                    }
-                )
-            except:
-                return jsonify(
-                    {
-                    "Mensaje":"Fallo la creacion del nuevo usuario",
-                    }
-                )
-        else:
-            return jsonify(Mensaje= "Solo el admin puede crear nuevos usuarios")
+    try:
+        nuevo_usuario = User(
+            username=username,
+            password_hash=generate_password_hash(password),
+            is_admin=is_admin,
+        )
+        db.session.add(nuevo_usuario)
+        db.session.commit()
+        return jsonify(
+            {
+            "Mensaje": "Usuario creado correctamente",
+            "Usuario": UserSchema().dump(obj=nuevo_usuario)
+            }
+            )
+    except:
+            return jsonify(
+                {
+                "Mensaje": "Fallo la creación del nuevo usuario",
+                }
+            )
     
     usuarios = User.query.all()
-    if administrador is True:
-        return UserSchema().dump(obj=usuarios, many=True)
-    else:
-        return MinimalUserSchema().dump(obj=usuarios, many=True)
+    return UserSchema().dump(obj=usuarios, many=True)
 
 
 
