@@ -55,9 +55,9 @@ ma = Marshmallow(app)
 jwt = JWTManager(app)
 
 
-#from views import register_blueprint
+from views import register_blueprint
 
-#register_blueprint(app)
+register_blueprint(app)
 @app.route("/")
 def index():
     return render_template('index.html')

@@ -1,0 +1,13 @@
+# Ensure text files use LF in the repository and convert to CRLF on checkout
+* text=auto
+
+# Convert all text files to use LF in the repository
+* text=auto
+
+# Specify LF for specific file types
+*.sh text eol=lf
+*.py text eol=lf
+*.html text eol=lf
+
+# Specify CRLF for specific file types (if needed)
+*.bat text eol=crlf
