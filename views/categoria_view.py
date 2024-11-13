@@ -75,3 +75,4 @@ def delete_categoria(id):
     if categoria:
         return jsonify({"message": "Categoria deleted"}), 200
     return jsonify({"message": "Categoria not found"}), 404
+

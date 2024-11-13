@@ -6,7 +6,7 @@ from services.modelo_service import ModeloService
 
 equipo_bp = Blueprint('equipo', __name__)
 
-@equipo_bp.route('/equipos', methods=['GET', 'POST'])
+@equipo_bp.route('/equipos', methods=['GET'])
 def listar_equipos():
     form = EquipoForm()
     modelo_service = ModeloService()

@@ -1,3 +1,4 @@
+
 import os
 from datetime import timedelta
 
@@ -21,16 +22,16 @@ from models import User
 from schemas import UserSchema, MinimalUserSchema
 
 
-auth_bp = Blueprint('auth', __name__)
+
+auth_bp = Blueprint('auth', __name__) 
 
 @auth_bp.route('/login', methods=['POST'])
-def login():
+def login(): 
     data = request.authorization
     username = data.username
     password = data.password
 
-    usuario = User.query.filter_by(username=username).first()
-    
+    usuario = User.query.filter_by(username=username).first() 
     if usuario and check_password_hash(
         pwhash=usuario.password_hash, password=password
     ):
